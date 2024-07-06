@@ -33,3 +33,6 @@ yarn-error.log*
 .idea
 
 node_modules
+
+*.csv
+*.parquet

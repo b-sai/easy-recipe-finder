@@ -10,7 +10,7 @@ const Home = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await readJsonFile("output.json");
+        const data = await readJsonFile("");
         setRecipeData(data);
       } catch (error) {
         console.error("Error fetching recipe data:", error);
@@ -28,7 +28,6 @@ const Home = () => {
   return (
     <Box sx={{ mt: 4 }}>
       {" "}
-
       <Container>
         <Grid container spacing={3}>
           {recipeData.map((recipe, index) => (
@@ -39,6 +38,8 @@ const Home = () => {
                 ingredients={recipe[2]}
                 path={recipe[3]}
                 url={recipe[4]}
+                time={recipe[5]}
+                yld={recipe[6]}
               />
             </Grid>
           ))}

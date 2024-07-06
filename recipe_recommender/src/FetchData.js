@@ -20,6 +20,8 @@ const readJsonFile = async (filePath) => {
       hit.recipe.ingredients.map((ingredient) => ingredient.text),
       hit.recipe.image,
       hit.recipe.url,
+      hit.recipe.totalTime,
+      hit.recipe.yield,
     ]);
 
     return data;

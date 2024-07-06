@@ -10,7 +10,15 @@ import {
   Box,
 } from "@mui/material";
 
-const RecipeCard = ({ recipeName, source, ingredients, path, url }) => {
+const RecipeCard = ({
+  recipeName,
+  source,
+  ingredients,
+  path,
+  url,
+  time,
+  yld,
+}) => {
   const hasIngredients = Array.isArray(ingredients) && ingredients.length > 0;
 
   return (
@@ -40,8 +48,8 @@ const RecipeCard = ({ recipeName, source, ingredients, path, url }) => {
           >
             {recipeName}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {source}
+          <Typography variant="body2" color="text.secondary" noWrap>
+            {`${time} minutes | ${yld} servings | ${source}`}
           </Typography>
         </Box>
         <Typography variant="h6" sx={{ mb: 1 }}>

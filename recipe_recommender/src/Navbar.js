@@ -13,7 +13,7 @@ const Navbar = () => {
           component="div"
           sx={{ flexGrow: 1, textAlign: "center" }}
         >
-          Find Easy Recipes
+          Find Easy Vegan Recipes
         </Typography>
       </Toolbar>
     </AppBar>
