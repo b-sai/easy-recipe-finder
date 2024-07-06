@@ -4,9 +4,9 @@ Find Easy Recipes
 
 ![alt text](image-1.png)
 
-### Get it on
+### Try it here
 
-https://easy-recipes-u9vh.onrender.com/
+https://easy-recipe-finder.onrender.com
 
 ## Features
 
