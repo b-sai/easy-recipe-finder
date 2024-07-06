@@ -2,7 +2,7 @@
 
 Find Easy Recipes
 
-![alt text](image-1.png)
+![alt text](image.png)
 
 ### Try it here
 
@@ -18,7 +18,7 @@ To run this project locally, follow these steps:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/easy-recipe-finder.git
+   git clone https://github.com/b-sai/easy-recipe-finder.git
    ```
 
 2. Navigate to the project directory:
