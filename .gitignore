@@ -36,3 +36,9 @@ node_modules
 
 *.csv
 *.parquet
+*.json
+*.jpg
+*.png
+*.jpeg
+*.bmp
+*.webp
