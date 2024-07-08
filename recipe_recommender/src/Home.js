@@ -6,11 +6,12 @@ import readJsonFile from "./FetchData";
 const Home = () => {
   const [recipeData, setRecipeData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const apiKey = process.env.REACT_APP_BACKEND;
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await readJsonFile("");
+        const data = await readJsonFile(apiKey);
         setRecipeData(data);
       } catch (error) {
         console.error("Error fetching recipe data:", error);
@@ -33,13 +34,13 @@ const Home = () => {
           {recipeData.map((recipe, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <RecipeCard
-                recipeName={recipe[0]}
-                source={recipe[1]}
-                ingredients={recipe[2]}
-                path={recipe[3]}
-                url={recipe[4]}
-                time={recipe[5]}
-                yld={recipe[6]}
+                recipeName={recipe.label}
+                source={recipe.source}
+                ingredients={recipe.ingredients}
+                path={recipe.image}
+                url={recipe.url}
+                time={recipe.totalTime}
+                yld={recipe.yield}
               />
             </Grid>
           ))}

@@ -1,6 +1,4 @@
-const readJsonFile = async (filePath) => {
-  const apiKey = process.env.REACT_APP_API;
-
+const readJsonFile = async (apiKey) => {
   try {
     const response = await fetch(apiKey);
 
@@ -10,21 +8,21 @@ const readJsonFile = async (filePath) => {
 
     const jsonData = await response.json();
 
-    if (!jsonData.hits) {
-      throw new Error("The JSON data does not contain a 'hits' property");
-    }
+    // if (!jsonData.hits) {
+    //   throw new Error("The JSON data does not contain a 'hits' property");
+    // }
 
-    const data = jsonData.hits.map((hit) => [
-      hit.recipe.label,
-      hit.recipe.source,
-      hit.recipe.ingredients.map((ingredient) => ingredient.text),
-      hit.recipe.image,
-      hit.recipe.url,
-      hit.recipe.totalTime,
-      hit.recipe.yield,
-    ]);
-
-    return data;
+    // const data = jsonData.hits.map((hit) => [
+    //   hit.recipe.label,
+    //   hit.recipe.source,
+    //   hit.recipe.ingredients.map((ingredient) => ingredient.text),
+    //   hit.recipe.image,
+    //   hit.recipe.url,
+    //   hit.recipe.totalTime,
+    //   hit.recipe.yield,
+    // ]);
+    console.log(jsonData[0]);
+    return jsonData;
   } catch (error) {
     console.error("Error reading JSON file:", error);
     return null;
