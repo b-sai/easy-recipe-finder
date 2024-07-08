@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -8,23 +8,54 @@ import {
   Checkbox,
   FormGroup,
   FormControlLabel,
+  CircularProgress,
 } from "@mui/material";
 import { FilterList } from "@mui/icons-material";
 
-const FILTER_OPTIONS = [
-  { name: "beachfront", label: "Beachfront" },
-  { name: "wifi", label: "Wifi" },
-  { name: "kitchen", label: "Kitchen" },
-  { name: "freeParking", label: "Free parking" },
-  { name: "washer", label: "Washer" },
-  { name: "hotTub", label: "Hot tub" },
-];
+const apiKey = process.env.REACT_APP_BACKEND;
+
+const FILTER_OPTIONS = async () => {
+  try {
+    const response = await fetch(apiKey + "/cuisines");
+    if (!response.ok) {
+      throw new Error("Failed to fetch cuisines");
+    }
+    const data = await response.json();
+    console.log("data", data);
+    return data.map((cuisine) => ({ name: cuisine, label: cuisine }));
+  } catch (error) {
+    console.error("Error fetching cuisines:", error);
+    throw error;
+  }
+};
 
 const FilterComponent = () => {
   const [open, setOpen] = useState(false);
-  const [filters, setFilters] = useState(
-    Object.fromEntries(FILTER_OPTIONS.map(({ name }) => [name, false]))
-  );
+  const [filters, setFilters] = useState({});
+  const [filterOptions, setFilterOptions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchFilterOptions = async () => {
+      setIsLoading(true);
+      try {
+        const options = await FILTER_OPTIONS();
+        setFilterOptions(options);
+        setFilters((prevFilters) => {
+          const newFilters = Object.fromEntries(
+            options.map((option) => [option.name, false])
+          );
+          return { ...newFilters, ...prevFilters };
+        });
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchFilterOptions();
+  }, []);
 
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -53,26 +84,36 @@ const FilterComponent = () => {
       </div>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Filters</DialogTitle>
-        <DialogContent>
-          <FormGroup>
-            {FILTER_OPTIONS.map(({ name, label }) => (
-              <FormControlLabel
-                key={name}
-                control={
-                  <Checkbox
-                    checked={filters[name]}
-                    onChange={handleFilterChange}
-                    name={name}
-                  />
-                }
-                label={label}
-              />
-            ))}
-          </FormGroup>
-        </DialogContent>
+        {isLoading ? (
+          <DialogContent>
+            <CircularProgress />
+          </DialogContent>
+        ) : error ? (
+          <DialogContent>Error: {error}</DialogContent>
+        ) : (
+          <DialogContent>
+            <FormGroup>
+              {filterOptions.map(({ name, label }) => (
+                <FormControlLabel
+                  key={name}
+                  control={
+                    <Checkbox
+                      checked={!!filters[name]}
+                      onChange={handleFilterChange}
+                      name={name}
+                    />
+                  }
+                  label={label}
+                />
+              ))}
+            </FormGroup>
+          </DialogContent>
+        )}
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleApply}>Apply</Button>
+          <Button onClick={handleApply} disabled={isLoading || error}>
+            Apply
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

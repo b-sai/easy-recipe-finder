@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Box, Grid, Container } from "@mui/material";
 import RecipeCard from "./Recipe";
 import readJsonFile from "./FetchData";
+import { RecipeContext } from "./App"; // Adjust the import path as needed
 
 const Home = () => {
-  const [recipeData, setRecipeData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const apiKey = process.env.REACT_APP_BACKEND;
+  const { recipeData, setRecipeData } = useContext(RecipeContext);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const data = await readJsonFile(apiKey);
-        setRecipeData(data);
+        setRecipeData(data); // Updating context data
       } catch (error) {
         console.error("Error fetching recipe data:", error);
       } finally {
