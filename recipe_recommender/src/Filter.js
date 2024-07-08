@@ -35,20 +35,22 @@ const FilterComponent = () => {
   };
 
   const handleApply = () => {
-    // Apply filter logic here
     console.log("Applied filters:", filters);
     handleClose();
   };
 
   return (
     <div>
-      <Button
-        variant="outlined"
-        startIcon={<FilterList />}
-        onClick={handleClickOpen}
-      >
-        Filters
-      </Button>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Button
+          variant="outlined"
+          startIcon={<FilterList />}
+          onClick={handleClickOpen}
+          sx={{ my: 2 }}
+        >
+          Filters
+        </Button>
+      </div>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Filters</DialogTitle>
         <DialogContent>
