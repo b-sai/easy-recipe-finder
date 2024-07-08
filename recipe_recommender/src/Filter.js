@@ -21,7 +21,6 @@ const FILTER_OPTIONS = async () => {
       throw new Error("Failed to fetch cuisines");
     }
     const data = await response.json();
-    console.log("data", data);
     return data.map((cuisine) => ({ name: cuisine, label: cuisine }));
   } catch (error) {
     console.error("Error fetching cuisines:", error);

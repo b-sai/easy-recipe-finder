@@ -2,23 +2,16 @@ import React, { useState, createContext } from "react";
 import Navbar from "./Navbar";
 import Home from "./Home";
 import Filter from "./Filter";
-
-// Create context outside of components
-export const RecipeContext = createContext({
-  recipeData: [],
-  setRecipeData: () => {},
-});
+import { RecipeProvider } from "./RecipeProvider";
 
 function App() {
-  const [recipeData, setRecipeData] = useState([]);
-
   return (
     <div>
       <Navbar />
-      <RecipeContext.Provider value={{ recipeData, setRecipeData }}>
-        <Filter />
+      <RecipeProvider>
+        {/* <Filter /> */}
         <Home />
-      </RecipeContext.Provider>
+      </RecipeProvider>
     </div>
   );
 }

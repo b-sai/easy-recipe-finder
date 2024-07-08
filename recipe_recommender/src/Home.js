@@ -1,19 +1,23 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { Box, Grid, Container } from "@mui/material";
 import RecipeCard from "./Recipe";
 import readJsonFile from "./FetchData";
-import { RecipeContext } from "./App"; // Adjust the import path as needed
+import { RecipeContext } from "./RecipeProvider";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const apiKey = process.env.REACT_APP_BACKEND;
   const { recipeData, setRecipeData } = useContext(RecipeContext);
+  const hasFetchedData = useRef(false);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await readJsonFile(apiKey);
-        setRecipeData(data); // Updating context data
+        if (!recipeData.length && !hasFetchedData.current) {
+          const data = await readJsonFile(apiKey);
+          setRecipeData(data);
+          hasFetchedData.current = true; // Mark data as fetched
+        }
       } catch (error) {
         console.error("Error fetching recipe data:", error);
       } finally {
@@ -21,8 +25,9 @@ const Home = () => {
       }
     }
     fetchData();
-  }, []);
-
+    console.log("here");
+    console.log("Attempting to fetch data");
+  }, [apiKey, recipeData, setRecipeData]);
   if (isLoading) {
     return <h3>Loading...</h3>;
   }
