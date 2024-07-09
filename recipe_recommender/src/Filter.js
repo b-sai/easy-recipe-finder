@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Button,
   Dialog,
@@ -11,19 +11,21 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { FilterList } from "@mui/icons-material";
+import { RecipeContext } from "./RecipeProvider";
+import axios from "axios";
 
 const apiKey = process.env.REACT_APP_BACKEND;
 
-const FILTER_OPTIONS = async () => {
+const fetchFilterOptions = async () => {
   try {
-    const response = await fetch(apiKey + "/cuisines");
+    const response = await fetch(apiKey + "/categories");
     if (!response.ok) {
-      throw new Error("Failed to fetch cuisines");
+      throw new Error("Failed to fetch categories");
     }
     const data = await response.json();
-    return data.map((cuisine) => ({ name: cuisine, label: cuisine }));
+    return data.map((category) => ({ name: category, label: category }));
   } catch (error) {
-    console.error("Error fetching cuisines:", error);
+    console.error("Error fetching categories:", error);
     throw error;
   }
 };
@@ -34,12 +36,13 @@ const FilterComponent = () => {
   const [filterOptions, setFilterOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { recipeData, setRecipeData } = useContext(RecipeContext);
 
   useEffect(() => {
-    const fetchFilterOptions = async () => {
+    const fetchAndSetFilterOptions = async () => {
       setIsLoading(true);
       try {
-        const options = await FILTER_OPTIONS();
+        const options = await fetchFilterOptions();
         setFilterOptions(options);
         setFilters((prevFilters) => {
           const newFilters = Object.fromEntries(
@@ -53,7 +56,7 @@ const FilterComponent = () => {
         setIsLoading(false);
       }
     };
-    fetchFilterOptions();
+    fetchAndSetFilterOptions();
   }, []);
 
   const handleClickOpen = () => setOpen(true);
@@ -64,8 +67,27 @@ const FilterComponent = () => {
     setFilters((prevFilters) => ({ ...prevFilters, [name]: checked }));
   };
 
-  const handleApply = () => {
-    console.log("Applied filters:", filters);
+  const handleApply = async () => {
+    const selectedFilters = Object.keys(filters).filter((key) => filters[key]);
+
+    const getFilteredData = async () => {
+      try {
+        const urlParams = new URLSearchParams();
+        selectedFilters.forEach((filter) =>
+          urlParams.append("categories", filter)
+        );
+
+        const response = await axios.post(`${apiKey}/filter/`, null, {
+          params: urlParams,
+        });
+
+        setRecipeData(response.data);
+      } catch (error) {
+        console.error("Error connecting to the API:", error);
+      }
+    };
+
+    getFilteredData();
     handleClose();
   };
 
@@ -110,7 +132,7 @@ const FilterComponent = () => {
         )}
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleApply} disabled={isLoading || error}>
+          <Button onClick={handleApply} disabled={isLoading || !!error}>
             Apply
           </Button>
         </DialogActions>

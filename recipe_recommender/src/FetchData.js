@@ -7,7 +7,7 @@ const readJsonFile = async (apiKey) => {
     }
 
     const jsonData = await response.json();
-
+    console.log("Fetching!");
     return jsonData;
   } catch (error) {
     console.error("Error reading JSON file:", error);

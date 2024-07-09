@@ -9,7 +9,7 @@ function App() {
     <div>
       <Navbar />
       <RecipeProvider>
-        {/* <Filter /> */}
+        <Filter />
         <Home />
       </RecipeProvider>
     </div>

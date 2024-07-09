@@ -8,16 +8,12 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const apiKey = process.env.REACT_APP_BACKEND;
   const { recipeData, setRecipeData } = useContext(RecipeContext);
-  const hasFetchedData = useRef(false);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        if (!recipeData.length && !hasFetchedData.current) {
-          const data = await readJsonFile(apiKey);
-          setRecipeData(data);
-          hasFetchedData.current = true; // Mark data as fetched
-        }
+        const data = await readJsonFile(apiKey);
+        setRecipeData(data);
       } catch (error) {
         console.error("Error fetching recipe data:", error);
       } finally {
@@ -25,9 +21,7 @@ const Home = () => {
       }
     }
     fetchData();
-    console.log("here");
-    console.log("Attempting to fetch data");
-  }, [apiKey, recipeData, setRecipeData]);
+  }, []);
   if (isLoading) {
     return <h3>Loading...</h3>;
   }
