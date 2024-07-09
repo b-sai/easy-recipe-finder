@@ -70,25 +70,6 @@ const FilterComponent = () => {
 
   const handleApply = async () => {
     const selectedFilters = Object.keys(filters).filter((key) => filters[key]);
-
-    const getFilteredData = async () => {
-      try {
-        const urlParams = new URLSearchParams();
-        selectedFilters.forEach((filter) =>
-          urlParams.append("categories", filter)
-        );
-
-        const response = await axios.post(`${apiKey}/filter/`, null, {
-          params: urlParams,
-        });
-
-        setRecipeData(response.data);
-      } catch (error) {
-        console.error("Error connecting to the API:", error);
-      }
-    };
-
-    // getFilteredData();
     setFilterData(selectedFilters);
     handleClose();
   };
