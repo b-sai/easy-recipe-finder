@@ -14,7 +14,7 @@ import { FilterList } from "@mui/icons-material";
 import { RecipeContext } from "./RecipeProvider";
 import axios from "axios";
 
-const apiKey = process.env.REACT_APP_BACKEND_TEST;
+const apiKey = process.env.REACT_APP_BACKEND;
 
 const fetchFilterOptions = async () => {
   try {

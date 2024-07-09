@@ -14,7 +14,7 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const apiKey = process.env.REACT_APP_BACKEND_TEST;
+  const apiKey = process.env.REACT_APP_BACKEND;
   const { recipeData, setRecipeData, filterData, setFilterData } =
     useContext(RecipeContext);
 
