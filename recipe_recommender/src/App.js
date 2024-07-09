@@ -4,6 +4,7 @@ import Home from "./Home";
 import Filter from "./Filter";
 import { RecipeProvider } from "./RecipeProvider";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 function App() {
   return (
     <div>
@@ -13,6 +14,7 @@ function App() {
         <Home />
       </RecipeProvider>
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
