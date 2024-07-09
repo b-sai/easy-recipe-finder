@@ -1,33 +1,28 @@
-const readJsonFile = async (filePath) => {
-  const apiKey = process.env.REACT_APP_API;
+import axios from "axios";
 
+const readJsonFile = async (apiKey, filterList, page = 1, limit = 20) => {
   try {
-    const response = await fetch(apiKey);
+    let params = new URLSearchParams({
+      page: page,
+      limit: limit,
+    });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    if (filterList.length > 0) {
+      filterList.forEach((filter) => {
+        params.append("categories", filter);
+      });
     }
 
-    const jsonData = await response.json();
+    const response = await axios.post(`${apiKey}/filter/`, null, {
+      params: params,
+    });
 
-    if (!jsonData.hits) {
-      throw new Error("The JSON data does not contain a 'hits' property");
-    }
-
-    const data = jsonData.hits.map((hit) => [
-      hit.recipe.label,
-      hit.recipe.source,
-      hit.recipe.ingredients.map((ingredient) => ingredient.text),
-      hit.recipe.image,
-      hit.recipe.url,
-      hit.recipe.totalTime,
-      hit.recipe.yield,
-    ]);
-
-    return data;
+    console.log("Fetching!");
+    return response.data.data;
   } catch (error) {
     console.error("Error reading JSON file:", error);
     return null;
   }
 };
+
 export default readJsonFile;
