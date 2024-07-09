@@ -1,17 +1,28 @@
-const readJsonFile = async (apiKey) => {
-  try {
-    const response = await fetch(apiKey);
+import axios from "axios";
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+const readJsonFile = async (apiKey, filterList, page = 1, limit = 20) => {
+  try {
+    let params = new URLSearchParams({
+      page: page,
+      limit: limit,
+    });
+
+    if (filterList.length > 0) {
+      filterList.forEach((filter) => {
+        params.append("categories", filter);
+      });
     }
 
-    const jsonData = await response.json();
+    const response = await axios.post(`${apiKey}/filter/`, null, {
+      params: params,
+    });
+
     console.log("Fetching!");
-    return jsonData;
+    return response.data.data;
   } catch (error) {
     console.error("Error reading JSON file:", error);
     return null;
   }
 };
+
 export default readJsonFile;

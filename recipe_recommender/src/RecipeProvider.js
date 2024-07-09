@@ -8,10 +8,12 @@ export const RecipeContext = createContext({
 
 export const RecipeProvider = ({ children }) => {
   const [recipeData, setRecipeData] = useState([]);
-  console.log("Context set", recipeData);
+  const [filterData, setFilterData] = useState([]);
 
   return (
-    <RecipeContext.Provider value={{ recipeData, setRecipeData }}>
+    <RecipeContext.Provider
+      value={{ recipeData, setRecipeData, filterData, setFilterData }}
+    >
       {children}
     </RecipeContext.Provider>
   );

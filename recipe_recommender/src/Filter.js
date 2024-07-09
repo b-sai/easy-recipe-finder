@@ -14,7 +14,7 @@ import { FilterList } from "@mui/icons-material";
 import { RecipeContext } from "./RecipeProvider";
 import axios from "axios";
 
-const apiKey = process.env.REACT_APP_BACKEND;
+const apiKey = process.env.REACT_APP_BACKEND_TEST;
 
 const fetchFilterOptions = async () => {
   try {
@@ -36,7 +36,8 @@ const FilterComponent = () => {
   const [filterOptions, setFilterOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { recipeData, setRecipeData } = useContext(RecipeContext);
+  const { recipeData, setRecipeData, filterData, setFilterData } =
+    useContext(RecipeContext);
 
   useEffect(() => {
     const fetchAndSetFilterOptions = async () => {
@@ -87,7 +88,8 @@ const FilterComponent = () => {
       }
     };
 
-    getFilteredData();
+    // getFilteredData();
+    setFilterData(selectedFilters);
     handleClose();
   };
 

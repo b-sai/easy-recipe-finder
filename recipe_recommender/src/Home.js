@@ -6,13 +6,14 @@ import { RecipeContext } from "./RecipeProvider";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const apiKey = process.env.REACT_APP_BACKEND;
-  const { recipeData, setRecipeData } = useContext(RecipeContext);
+  const apiKey = process.env.REACT_APP_BACKEND_TEST;
+  const { recipeData, setRecipeData, filterData, setFilterData } =
+    useContext(RecipeContext);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await readJsonFile(apiKey);
+        const data = await readJsonFile(apiKey, filterData);
         setRecipeData(data);
       } catch (error) {
         console.error("Error fetching recipe data:", error);
@@ -21,7 +22,8 @@ const Home = () => {
       }
     }
     fetchData();
-  }, []);
+    console.log("here in use effect", filterData);
+  }, [filterData]);
   if (isLoading) {
     return <h3>Loading...</h3>;
   }
