@@ -1,44 +1,15 @@
 import React from "react";
 import {
   Card,
-  CardMedia,
   CardContent,
+  CardMedia,
   Typography,
-  Box,
-  List,
-  ListItem,
   Button,
+  Box,
 } from "@mui/material";
 
-const TruncatedTypography = ({ text, maxLines = 1 }) => (
-  <Typography
-    variant="body2"
-    sx={{
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      display: "-webkit-box",
-      WebkitLineClamp: maxLines,
-      WebkitBoxOrient: "vertical",
-      lineHeight: "1.2em",
-      maxHeight: `${1.2 * maxLines}em`,
-    }}
-  >
-    {text}
-  </Typography>
-);
-
-const RecipeCard = ({
-  path,
-  recipeName,
-  time,
-  yld,
-  source,
-  ingredients,
-  url,
-}) => {
-  const hasIngredients = ingredients && ingredients.length > 0;
-  const displayedIngredients = hasIngredients ? ingredients.slice(0, 5) : [];
-  const hasMoreIngredients = hasIngredients && ingredients.length > 5;
+const RecipeCard = ({ recipeName, source, ingredients, path, url }) => {
+  const hasIngredients = Array.isArray(ingredients) && ingredients.length > 0;
 
   return (
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -51,55 +22,79 @@ const RecipeCard = ({
           padding: 2,
         }}
       >
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ height: "80px", mb: 2 }}>
           <Typography
             gutterBottom
             variant="h5"
             component="div"
             sx={{
+              height: "3em",
               overflow: "hidden",
               textOverflow: "ellipsis",
               display: "-webkit-box",
               WebkitLineClamp: 2,
               WebkitBoxOrient: "vertical",
-              lineHeight: "1.2em",
-              maxHeight: "2.4em",
             }}
           >
             {recipeName}
           </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {`${time} minutes | ${yld} servings | ${source}`}
+          <Typography variant="body2" color="text.secondary">
+            {source}
           </Typography>
         </Box>
         <Typography variant="h6" sx={{ mb: 1 }}>
           Ingredients
         </Typography>
-        <Box sx={{ height: "150px", mb: 2 }}>
-          {hasIngredients ? (
-            <List>
-              {displayedIngredients.map((ingredient, index) => (
-                <ListItem key={index} disablePadding>
-                  <TruncatedTypography text={ingredient} />
-                </ListItem>
-              ))}
-              {hasMoreIngredients && (
-                <ListItem disablePadding>
-                  <Typography variant="body2">...</Typography>
-                </ListItem>
-              )}
-            </List>
-          ) : (
-            <Typography variant="body2">No ingredients available</Typography>
-          )}
+        <Box
+          sx={{
+            height: "150px",
+            overflow: "hidden",
+            position: "relative",
+            mb: 2,
+          }}
+        >
+          <Box
+            sx={{
+              height: "100%",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: 6,
+              WebkitBoxOrient: "vertical",
+            }}
+          >
+            {hasIngredients ? (
+              ingredients.map((ingredient, index) => (
+                <Typography
+                  variant="body2"
+                  component="div"
+                  key={index}
+                  sx={{
+                    display: "-webkit-box",
+                    WebkitLineClamp: 1,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {ingredient}
+                </Typography>
+              ))
+            ) : (
+              <Typography variant="body2">No ingredients available</Typography>
+            )}
+          </Box>
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: "5em",
+              background:
+                "linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1))",
+            }}
+          />
         </Box>
         <Button
           variant="contained"
@@ -108,7 +103,10 @@ const RecipeCard = ({
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          sx={{ mt: "auto", fontWeight: "bold" }}
+          sx={{
+            mt: "auto",
+            fontWeight: "bold",
+          }}
         >
           VIEW RECIPE
         </Button>
