@@ -63,7 +63,7 @@ const Home = () => {
   return (
     <Box sx={{ mt: 4 }}>
       <Container>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} alignItems="stretch">
           {recipeData.map((recipe, index) => (
             <Grid
               item
